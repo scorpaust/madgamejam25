@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 enum Movement
@@ -13,46 +14,56 @@ public class PlatformMovementController : MonoBehaviour
     private Movement movementType;
 
     [SerializeField]
-    float speed = 0;
-    
-    [SerializeField]
-    float limit = 0;
+    float speed = 1.0f;
 
-    private Vector3 startPos;
+    [SerializeField]
+    float timeToChangeDir = 2.0f;
+    
+    private Vector2 startPos;
+    private Rigidbody2D rb;
+
+    [SerializeField]
+    Vector3 m_EulerAngleVelocity = new Vector3(0,0,100);
+
 
     void Start()
     {
-        startPos = transform.position;
+        rb = GetComponent<Rigidbody2D>();
+        startPos = rb.position;
+        StartCoroutine(WaitAndPrint(timeToChangeDir));
+        
     }
 
-    void Update()
+    void FixedUpdate()
     {
         switch (movementType)
         {   
             case Movement.HORIZONTAL:
-                transform.position += new Vector3( speed * Time.deltaTime,0,0);
-                CheckLimit();
+                float posX = rb.position.x + speed * Time.fixedDeltaTime;
+                rb.MovePosition(new Vector2(posX,rb.position.y));
                 break;
             case Movement.VERTICAL:
-                transform.position += new Vector3(0,speed * Time.deltaTime, 0);
-                CheckLimit();
+                float posY = rb.position.y + speed * Time.fixedDeltaTime;
+                rb.MovePosition(new Vector2(rb.position.x, posY));
                 break;
             case Movement.Rotate:
-                transform.Rotate(new Vector3(0,0,speed * Time.deltaTime));
+               // Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
+               // rb.MoveRotation(rb.rotation * deltaRotation);
                 break;
             default:
                 break;
         }
     }
 
-    void CheckLimit()
+   
+    private IEnumerator WaitAndPrint(float waitTime)
     {
-        float distanceFromStart = Vector3.Distance(startPos, transform.position);
-
-        if (distanceFromStart >= limit)
+        while (true)
         {
+            yield return new WaitForSeconds(waitTime);
             speed *= -1;
-            transform.position = startPos + (transform.position - startPos).normalized * limit;
+            print("WaitAndPrint " + Time.time);
         }
+      
     }
 }
