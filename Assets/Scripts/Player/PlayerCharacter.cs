@@ -55,6 +55,11 @@ public class PlayerCharacter : MonoBehaviour
 	[SerializeField] private bool hasDoubleJump = false;
 	private bool isTransparent = false;
 
+	[Header("Blink Settings")]
+	private bool isBlinking;
+	[SerializeField] private int blinkTimes = 3; // Quantas vezes pisca
+	[SerializeField] private float blinkDuration = 0.1f; // Tempo entre cada troca de cor
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
@@ -196,6 +201,11 @@ public class PlayerCharacter : MonoBehaviour
 		{
 			PurifyAndRespawn();
 		}
+
+		if (!isBlinking)
+		{
+			StartCoroutine(BlinkEffect());
+		}
 	}
 
 	void RecoverEnergy(float amount)
@@ -223,7 +233,7 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.CompareTag(Tags.LIGHTZONE))
+		if (other.CompareTag(Tags.LIGHTZONE) || other.CompareTag(Tags.DIVINELIGHT))
 		{
 			isInLight = true;
 		}
@@ -232,7 +242,7 @@ public class PlayerCharacter : MonoBehaviour
 		{
 			Debug.Log("Entrou");
 			if (isGrounded)
-				Debug.Log("Grounded");
+				Debug.Log("Entrou");
 			{
 				gameObject.transform.SetParent(other.transform);
 				currentPlatform = other.transform;
@@ -243,7 +253,7 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void OnTriggerExit2D(Collider2D other)
 	{
-		if (other.CompareTag(Tags.LIGHTZONE))
+		if (other.CompareTag(Tags.LIGHTZONE) || other.CompareTag(Tags.DIVINELIGHT))
 		{
 			isInLight = false;
 		}
@@ -282,5 +292,21 @@ public class PlayerCharacter : MonoBehaviour
 				Debug.Log("Unknown ability unlocked.");
 				break;
 		}
+	}
+
+	private IEnumerator BlinkEffect()
+	{
+		isBlinking = true;
+
+		for (int i = 0; i < blinkTimes; i++)
+		{
+			sr.color = dangerColor;
+			yield return new WaitForSeconds(blinkDuration);
+			sr.color = normalColor;
+			yield return new WaitForSeconds(blinkDuration);
+		}
+
+		sr.color = dangerColor; // Restaura a cor original
+		isBlinking = false;
 	}
 }
