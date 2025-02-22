@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 652781182}
   m_Layer: 0
   m_Name: DivineLight
-  m_TagString: Untagged
+  m_TagString: LightZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 652781178}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.26, z: 0}
+  m_LocalPosition: {x: 0, y: 3.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -198,7 +198,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -269,6 +269,11 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!61 &937668186 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 7310139921051729945, guid: 6e8379b207e6d3a46b63bee092ac9701, type: 3}
+  m_PrefabInstance: {fileID: 797024682282456502}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &994458853
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,10 +453,12 @@ MonoBehaviour:
   acceleration: 10
   deceleration: 15
   maxSpeed: 10
-  dashSpeed: 10
   jumpForce: 8
   gravityScale: 2
   fallingGravityScale: 3
+  dashSpeed: 10
+  dashDuration: 0.2
+  dashCooldown: 1
   lightDamage: 10
   shadowRecovery: 5
   energyBar: {fileID: 0}
@@ -463,8 +470,53 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1073741824
+  hasTransparency: 0
   hasDash: 0
   hasDoubleJump: 0
+--- !u!1 &1520358714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1520358716}
+  - component: {fileID: 1520358715}
+  m_Layer: 0
+  m_Name: PlayerStateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1520358715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520358714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ccd4d5c72c2072478c2f08ee3f05bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1520358716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520358714}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.8719532, y: -0.38189274, z: -0.03687273}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1618048529
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,6 +975,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4779732803271321913, guid: 6e8379b207e6d3a46b63bee092ac9701, type: 3}
+      propertyPath: rect1
+      value: 
+      objectReference: {fileID: 937668186}
+    - target: {fileID: 4779732803271321913, guid: 6e8379b207e6d3a46b63bee092ac9701, type: 3}
+      propertyPath: rect2
+      value: 
+      objectReference: {fileID: 652781182}
     - target: {fileID: 5377222471089678907, guid: 6e8379b207e6d3a46b63bee092ac9701, type: 3}
       propertyPath: m_Name
       value: Platform
@@ -978,7 +1038,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 1618048532}
   - {fileID: 994458855}
-  - {fileID: 652781179}
   - {fileID: 2040468745}
   - {fileID: 797024682282456502}
   - {fileID: 2064884926}
+  - {fileID: 652781179}
+  - {fileID: 1520358716}

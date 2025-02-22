@@ -62,7 +62,6 @@ public class PlatformMovementController : MonoBehaviour
         {
             yield return new WaitForSeconds(waitTime);
             speed *= -1;
-            print("WaitAndPrint " + Time.time);
         }
       
     }
