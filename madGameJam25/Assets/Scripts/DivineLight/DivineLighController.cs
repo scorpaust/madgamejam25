@@ -10,10 +10,10 @@ public class DivineLighController : MonoBehaviour
     [SerializeField]
     float rayLenght = 100.0f;
 
-    float initialLenght = 0;
+    private float initialLenght = 0;
 
-    int rotateDirection = 1;
-    int inputCount = 0;
+    private int rotateDirection = 1;
+    private int inputCount = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
