@@ -10,6 +10,8 @@ enum Movement
 
 public class PlatformMovementController : MonoBehaviour
 {
+    [Header("Movement variables")]
+
     [SerializeField] 
     private Movement movementType;
 
@@ -18,18 +20,17 @@ public class PlatformMovementController : MonoBehaviour
 
     [SerializeField]
     float timeToChangeDir = 2.0f;
-    
-    private Vector2 startPos;
-    private Rigidbody2D rb;
+
+    [Header("Rotation variables")]
 
     [SerializeField]
-    Vector3 m_EulerAngleVelocity = new Vector3(0,0,100);
+    Vector3 m_EulerAngleVelocity = new Vector3(0, 0, 100);
 
+    private Rigidbody2D rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        startPos = rb.position;
         StartCoroutine(WaitAndPrint(timeToChangeDir));
         
     }
@@ -47,15 +48,14 @@ public class PlatformMovementController : MonoBehaviour
                 rb.MovePosition(new Vector2(rb.position.x, posY));
                 break;
             case Movement.Rotate:
-               // Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
-               // rb.MoveRotation(rb.rotation * deltaRotation);
+                float deltaAngle = m_EulerAngleVelocity.z * Time.fixedDeltaTime; // Get the Z-axis rotation
+                rb.MoveRotation(rb.rotation + deltaAngle); // Add the angle directly
                 break;
             default:
                 break;
         }
     }
 
-   
     private IEnumerator WaitAndPrint(float waitTime)
     {
         while (true)
