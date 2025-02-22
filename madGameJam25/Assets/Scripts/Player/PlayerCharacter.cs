@@ -1,7 +1,9 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -68,7 +70,8 @@ public class PlayerCharacter : MonoBehaviour
 		Jump();
 		if (hasDash) Dash();
 		if (hasTransparency) ToggleTransparency();
-	}
+
+    }
 
 	void FixedUpdate()
 	{
@@ -206,27 +209,18 @@ public class PlayerCharacter : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
+		print("COllision detected: "+ other.gameObject.name);
 		if (other.CompareTag("LightZone"))
 		{
 			isInLight = true;
 		}
-		else if (other.CompareTag("MovingPlatform"))
-		{
-			transform.SetParent(other.transform); // Fixa o jogador à plataforma
-			currentPlatform = other.transform;
-		}
-	}
+    }
 
 	private void OnTriggerExit2D(Collider2D other)
 	{
 		if (other.CompareTag("LightZone"))
 		{
 			isInLight = false;
-		}
-		else if (other.CompareTag("MovingPlatform") && currentPlatform != null)
-		{
-			transform.SetParent(null); // Libera o jogador ao sair da plataforma
-			currentPlatform = null;
 		}
 	}
 
