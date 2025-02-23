@@ -25,7 +25,7 @@ public class PowerUpItem : MonoBehaviour
 			{
 				playerEffect.ApplyPowerUp(powerUp);
 				vfx.SetActive(true);
-				vfx.GetComponent<ParticleSystem>().Play();
+				ScreenFlash.Instance.TriggerFlash();
 				Destroy(gameObject); // Remove o item após coleta
 			}
 		}
