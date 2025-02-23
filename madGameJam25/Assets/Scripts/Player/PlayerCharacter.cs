@@ -38,7 +38,7 @@ public class PlayerCharacter : MonoBehaviour
 	private bool isInLight;
 
 	[Header("State and Feedbacks")]
-	[SerializeField] private Color normalColor = Color.black;
+	[SerializeField] private Color normalColor = Color.white;
 	[SerializeField] private Color dangerColor = Color.white;
 	private SpriteRenderer sr;
 
@@ -56,11 +56,15 @@ public class PlayerCharacter : MonoBehaviour
 	[SerializeField] private bool hasDoubleJump = false;
 	private bool isTransparent = false;
 
-	void Start()
+    private Animator anim;  // Animator reference
+
+
+    void Start()
 	{
 		rb = GetComponentInChildren<Rigidbody2D>();
 		sr = GetComponentInChildren<SpriteRenderer>();
-		currentEnergy = maxEnergy;
+        anim = GetComponentInChildren<Animator>();
+        currentEnergy = maxEnergy;
 		PlayerStateManager.Instance.SetState(PlayerStateManager.PlayerState.Normal);
 	}
 
@@ -85,7 +89,17 @@ public class PlayerCharacter : MonoBehaviour
 		float moveInput = Input.GetAxisRaw("Horizontal");
 		currentSpeed = Mathf.Lerp(currentSpeed, moveInput * maxSpeed, acceleration * Time.fixedDeltaTime);
 		rb.linearVelocity = new Vector2(currentSpeed, rb.linearVelocity.y);
-	}
+
+        // Set Animation States
+        if (Mathf.Abs(moveInput) > 0.01f)
+        {
+            anim.SetBool("isWalking", true);
+        }
+        else
+        {
+            anim.SetBool("isWalking", false);
+        }
+    }
 
 	void Jump()
 	{
@@ -98,16 +112,25 @@ public class PlayerCharacter : MonoBehaviour
 			if (isGrounded)
 			{
 				rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-			}
+                anim.SetBool("isJumping", true); // Start Jump Animation
+            }
 			else if (hasDoubleJump && canDoubleJump)
 			{
 				rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 				canDoubleJump = false; // Prevents multiple double jumps
-			}
+                anim.SetBool("isJumping", true); // Start Jump Animation
+            }
 		}
 
 		rb.gravityScale = rb.linearVelocity.y < 0 ? fallingGravityScale : gravityScale;
-	}
+
+
+        // Check if falling
+        if (rb.linearVelocity.y < 0)
+        {
+            anim.SetBool("isJumping", false); // End Jump Animation
+        }
+    }
 
 	void Dash()
 	{
