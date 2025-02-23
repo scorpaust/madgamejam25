@@ -105,7 +105,7 @@ public class PlayerCharacter : MonoBehaviour
 	{
 		isGrounded = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, groundLayer);
 
-		if (isGrounded) canDoubleJump = false;
+		if (isGrounded) canDoubleJump = true;
 
 		if (Input.GetKeyDown(KeyCode.Space))
 		{

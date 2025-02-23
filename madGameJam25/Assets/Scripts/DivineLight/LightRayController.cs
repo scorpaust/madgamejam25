@@ -7,7 +7,7 @@ public class LightRayController : MonoBehaviour
     [SerializeField] private LayerMask obstacleLayer;
     [SerializeField] private LineRenderer lineRenderer;
 
-    private Vector2 rayDirection = Vector2.down; // Light moves downward
+    [SerializeField] private Vector2 rayDirection = Vector2.down; // Light moves downward
 
     void Update()
     {
