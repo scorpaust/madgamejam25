@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: TransparencyPowerUp
   m_EditorClassIdentifier: 
   powerUpType: 1
-  powerUpIcon: {fileID: 0}
+  powerUpIcon: {fileID: 4631367063264458773, guid: 59ad78c92e1245845ab51695645e461d, type: 3}
   duration: 3
